@@ -24,3 +24,18 @@ has independent reference errors only for dimension 1. Timings are single local
 measurements. Finite experiments do not establish universal estimator validity
 or asymptotic performance. Package versions and run settings remain recorded
 with the saved summary; unpinned dependencies may resolve differently later.
+
+## Verification on 26 October 2026
+
+All eight existing estimator tests passed. A separate copy ran all 21 code cells
+with the default seed, 50,000-sample cap and 30-repeat cap through the in-process
+runner. Every numerical summary value matched the saved run; only version
+fields and measured timings differed. The verification used Python 3.12.14,
+NumPy 2.3.5, SciPy 1.17.0, Matplotlib 3.10.8 and nbformat 5.11.1. The committed
+notebook, figures and summary were preserved.
+
+A real Jupyter-kernel check could not start because this environment denies
+both TCP and IPC kernel sockets. That is an execution-environment limitation;
+this check does not establish that the Jupyter engine works. Dependencies are
+unpinned, so the verification environment is recorded rather than implied to
+match every future installation.
