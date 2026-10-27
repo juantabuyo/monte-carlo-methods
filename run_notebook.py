@@ -12,7 +12,7 @@ import traceback
 import nbformat
 
 
-def execute_in_process(notebook, project):
+def execute_in_process(notebook, project, results_dir):
     """Execute plain Python cells in order, capturing actual prints and figures.
 
     This notebook has no magics, interactive widgets or top-level expressions
@@ -62,7 +62,8 @@ def execute_in_process(notebook, project):
                 flush_streams()
                 cell.outputs.append(nbformat.v4.new_output('error', ename=type(error).__name__,
                                     evalue=str(error), traceback=traceback.format_exc().splitlines()))
-                nbformat.write(notebook, project/'results/failed-run.ipynb')
+                results_dir.mkdir(parents=True, exist_ok=True)
+                nbformat.write(notebook, results_dir/'failed-run.ipynb')
                 raise
             flush_streams()
             print(f'Executed cell {index} ({count} code cells).', file=sys.stderr)
@@ -81,12 +82,29 @@ def main():
                         help='Sequential Python (default) or a Jupyter kernel')
     parser.add_argument('--output', default='monte_carlo_methods.ipynb',
                         help='Output notebook path, relative to the project directory')
+    parser.add_argument('--results-dir', default='results',
+                        help='Where the figures, run-summary.json and any failed-run.ipynb are written, '
+                             'relative to the project directory. Anything but the default must be new or empty')
     args = parser.parse_args()
     if args.max_samples < 100 or args.repeats < 2:
         parser.error('Use at least 100 samples and two repeats.')
     project = Path(__file__).resolve().parent
+    if not (project / args.output).parent.is_dir():
+        parser.error('The parent directory of --output must exist; nothing was executed.')
+    results_dir = project / args.results_dir
+    if results_dir.resolve() == (project / 'results').resolve():
+        if (project / args.output).resolve() != (project / 'monte_carlo_methods.ipynb').resolve():
+            print(f'Note: --output only moves the notebook; the figures and run-summary.json still replace '
+                  f'the files in {results_dir}. Use --results-dir to redirect them.', file=sys.stderr)
+    else:
+        if results_dir.exists() and (not results_dir.is_dir() or any(results_dir.iterdir())):
+            parser.error('--results-dir must be a new or empty directory; existing runs are never overwritten.')
+        try:
+            results_dir.mkdir(parents=True, exist_ok=True)
+        except OSError as error:
+            parser.error(f'Cannot create --results-dir: {error}')
     os.environ.update(MC_SEED=str(args.seed), MC_MAX_SAMPLES=str(args.max_samples),
-                      MC_REPEATS=str(args.repeats))
+                      MC_REPEATS=str(args.repeats), MC_RESULTS_DIR=str(results_dir))
     notebook = nbformat.read(project / 'monte_carlo_methods.ipynb', as_version=4)
     nbformat.validate(notebook)
     for cell in notebook.cells:
@@ -98,14 +116,14 @@ def main():
         NotebookClient(notebook, timeout=240, kernel_name='python3',
                        resources={'metadata': {'path': str(project)}}).execute()
     else:
-        execute_in_process(notebook, project)
+        execute_in_process(notebook, project, results_dir)
     notebook.metadata['execution'] = {'engine': args.engine, 'seed': args.seed,
                                      'sample_cap': args.max_samples, 'repeat_cap': args.repeats}
     nbformat.validate(notebook)
     output = project / args.output
     nbformat.write(notebook, output)
     print(f'Executed all code cells and saved {output.name}.')
-    print('Regenerated figures and summary in results/.')
+    print(f'Regenerated figures and summary in {args.results_dir}/.')
 
 
 if __name__ == '__main__':

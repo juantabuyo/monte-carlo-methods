@@ -6,3 +6,4 @@ __pycache__/
 results/*-rerun.ipynb
 __MACOSX/
 ._*
+runs/

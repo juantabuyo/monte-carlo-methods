@@ -1,0 +1,9 @@
+# Direct dependencies checked on CPython 3.12.14, Linux, 23 October 2026.
+# Install with: python -m pip install -r requirements.txt -c constraints-tested.txt
+# This is a tested direct-dependency set, not a complete transitive lock.
+numpy==2.5.4
+scipy==1.18.1
+matplotlib==3.11.2
+nbformat==5.11.1
+nbclient==0.11.0
+ipykernel==7.4.0
