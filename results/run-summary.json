@@ -1,0 +1,121 @@
+{
+  "prepared_on": "2026-10-17",
+  "seed": 20261017,
+  "sample_cap": 50000,
+  "repeat_cap": 30,
+  "python": "3.12.14",
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "matplotlib": "3.10.8",
+  "scope": "All 24 exercises; reduced sample sizes",
+  "mean_adjacent_slope_exercise8": -0.43451377252357865,
+  "proposal_comparison": {
+    "sample_count": 50000,
+    "repeats": 30,
+    "numerical_reference": 2.0927500373170944,
+    "uniform_mean_absolute_error": 0.008256851144127546,
+    "proposal_variances": [
+      0.25,
+      1.0,
+      2.25,
+      4.0,
+      9.0
+    ],
+    "importance_mean_absolute_errors": [
+      0.008924316777271398,
+      0.003167278892683534,
+      0.006948521528672291,
+      0.0064949977298419,
+      0.006285366645517791
+    ]
+  },
+  "disc_comparison": {
+    "counter": "candidate points per estimate",
+    "candidates": [
+      100,
+      400,
+      2500,
+      10000,
+      40000
+    ],
+    "grid_integrand_evaluations": [
+      80,
+      316,
+      1976,
+      7860,
+      31428
+    ],
+    "mc_mean_integrand_evaluations": [
+      79.23333333333333,
+      312.0,
+      1966.6666666666667,
+      7865.333333333333,
+      31416.0
+    ],
+    "grid_absolute_errors": [
+      0.05480367320510382,
+      0.017803673205103232,
+      0.01991599320510362,
+      0.0023841532051036562,
+      0.0012059332051035376
+    ],
+    "mc_mean_absolute_errors": [
+      0.0765017997469215,
+      0.035229557944032354,
+      0.011878264332343373,
+      0.007088907102239061,
+      0.0037204163456733942
+    ]
+  },
+  "dimension_results": {
+    "1": {
+      "mean_integral": 1.849281474748952,
+      "sample_standard_deviation": 0.001090178421165386,
+      "mean_integrand": 0.924640737374476
+    },
+    "2": {
+      "mean_integral": 2.984400060727627,
+      "sample_standard_deviation": 0.003854112784587848,
+      "mean_integrand": 0.7461000151819067
+    },
+    "3": {
+      "mean_integral": 4.351356036191939,
+      "sample_standard_deviation": 0.011496432987504272,
+      "mean_integrand": 0.5439195045239924
+    },
+    "5": {
+      "mean_integral": 7.640670807979437,
+      "sample_standard_deviation": 0.042801433824275745,
+      "mean_integrand": 0.2387709627493574
+    },
+    "10": {
+      "mean_integral": 22.733053513374518,
+      "sample_standard_deviation": 0.22749937652994187,
+      "mean_integrand": 0.022200247571654803
+    }
+  },
+  "timings": {
+    "dimensions": [
+      1,
+      2,
+      3,
+      5,
+      10
+    ],
+    "mc_seconds": [
+      0.0005288239999572397,
+      0.0014418850005313288,
+      0.002046272999905341,
+      0.0035231169995313394,
+      0.005775585000264982
+    ],
+    "grid_seconds": [
+      9.815799967327621e-05,
+      0.00010747099986474495,
+      0.00012097099988750415,
+      0.004559628000606608,
+      null
+    ],
+    "grid_dimension10": "not run; count projected from 10**10"
+  }
+}
